@@ -1,34 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, RouterProvider } from 'react-router-dom';
+import { createRouter } from './Router';
 import axios from 'axios';
+import HomePage from './HomePage';
+import MapPage from './MapPage';
 
-function App() {
-  const [data, setData] = useState(null);
+export default function App() {
 
-  useEffect(() => {
-    axios.get('http://localhost:5000/members')
-      .then(response => {
-        setData(response.data);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
-  }, []); // Empty dependency array to run once
+  const router = createRouter();
 
   return (
     <div>
-      <h1>Members</h1>
-      {data ? (
-        <ul>
-          {data.members.map((member, index) => (
-            <li key={index}>{member}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <RouterProvider router={router}/>
     </div>
   );
 }
-
-export default App;
