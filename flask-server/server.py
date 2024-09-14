@@ -9,6 +9,9 @@ from pydub import AudioSegment
 app = Flask(__name__)
 CORS(app)  
 
+UPLOAD_FOLDER = './uploads'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 @app.route('/members', methods=['GET'])
 def get_members():
     members = {"members": ["member1", "member2", "member3"]}
@@ -31,16 +34,19 @@ def convert_webm_to_wav(webm_data):
 @app.route('/upload-speech', methods=['POST'])
 def upload_audio():
     try:
+        # Check if the audio file is in the request
         if 'audio' not in request.files:
             return 'Audio file not found', 400
         
         audio_file = request.files['audio']
 
-        audio_data = audio_file.read()
+        # Generate a safe file name and save it to the uploads folder
+        file_path = os.path.join(UPLOAD_FOLDER, audio_file.filename)
 
-        wav_io = convert_webm_to_wav(audio_data) 
+        # Save the file to the specified path
+        audio_file.save(file_path)
 
-        return 'working', 200
+        return f'File saved to {file_path}', 200
 
     except Exception as e:
         print(f"Error occurred: {e}")
