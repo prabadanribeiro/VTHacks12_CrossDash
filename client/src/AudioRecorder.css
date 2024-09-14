@@ -1,0 +1,12 @@
+.recording-button {
+  background-color: #e74c3c; /* Red color */
+  color: white;              /* Text color */
+  border: none;              /* Remove default border */
+  padding: 15px 30px;        /* Add padding to the button */
+  font-size: 16px;           /* Set the font size */
+  font-family: 'Montserrat', sans-serif; /* Font family */
+  border-radius: 8px;        /* Rounded corners */
+  cursor: pointer;           /* Pointer cursor on hover */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition for hover effects */
+}

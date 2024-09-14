@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Address from GPS</title>
+</head>
+<body>
+    <button onclick="getLocation()">Get Address</button>
+    <p id="address"></p>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocation, showError);
+            } else {
+                document.getElementById("address").innerText = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function sendLocation(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            fetch('/reverse-geocode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ latitude, longitude }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("address").innerText = `Address: ${data.address}`;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    document.getElementById("address").innerText = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    document.getElementById("address").innerText = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    document.getElementById("address").innerText = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    document.getElementById("address").innerText = "An unknown error occurred.";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

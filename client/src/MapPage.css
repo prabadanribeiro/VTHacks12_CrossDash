@@ -1,6 +1,5 @@
 .head {
-  background-color: #f4f4f4; 
-
+  background-color: #f4f4f4;
 }
 
 .logo-container {
@@ -10,17 +9,70 @@
   border-radius: 8px;
   border: 1px solid #ddd;
   padding: 10px;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
 
 .logo-container h1 {
-  display: inline-block; 
+  display: inline-block;
   margin: 0;
   padding: 0;
   font-size: 50px;
   font-family: 'Montserrat', sans-serif;
   vertical-align: middle;
+}
+
+.get-help-now {
+  font-size: 35px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.get-help-stuff {
+  margin-top: 50px;
+}
+
+.product {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  width: 100%;
+}
+
+.content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: 100%;
+}
+
+.map-container {
+  width: 70%;
+  height: 450px;
+  margin-right: 20px; 
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.audio-container {
+  width: 30%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recording-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 20px 25px;
+  font-size: 30px;
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
