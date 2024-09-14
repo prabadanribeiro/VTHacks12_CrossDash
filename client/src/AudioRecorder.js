@@ -1,78 +1,96 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import './MapPage.css';
 
 const AudioRecorder = () => {
+
   const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const [transcription, setTranscription] = useState('');
+  const [mediaRecorderAvailable, setMediaRecorderAvailable] = useState(false);
   const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
 
   useEffect(() => {
-    // Request permission to access the microphone
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
         mediaRecorder.current = new MediaRecorder(stream);
 
-        // Save chunks of audio data as they become available
         mediaRecorder.current.ondataavailable = (event) => {
           audioChunks.current.push(event.data);
         };
 
-        // When recording stops, create a Blob from the chunks
         mediaRecorder.current.onstop = () => {
           const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
           setAudioBlob(blob);
-          audioChunks.current = []; // Reset the audio chunks
+          audioChunks.current = [];
+          setIsProcessing(true); 
+          sendAudioToServer(blob);
         };
+
+        setMediaRecorderAvailable(true); 
       })
-      .catch(error => console.error('Error accessing microphone:', error));
+      .catch(error => {
+        console.error('Error accessing microphone:', error);
+        setMediaRecorderAvailable(false); 
+      });
   }, []);
 
   const startRecording = () => {
-    setIsRecording(true);
-    mediaRecorder.current.start();
+    if (mediaRecorderAvailable && mediaRecorder.current) {
+      setIsRecording(true);
+      mediaRecorder.current.start();
+    } else {
+      console.error('MediaRecorder is not available.');
+    }
   };
 
   const stopRecording = () => {
-    setIsRecording(false);
-    mediaRecorder.current.stop();
+    if (mediaRecorderAvailable && mediaRecorder.current) {
+      setIsRecording(false);
+      mediaRecorder.current.stop();
+    }
   };
 
-  const sendAudioToServer = async () => {
-    if (!audioBlob) return;
+  const sendAudioToServer = async (blob) => {
+    
+    if (!blob) return;
 
     const formData = new FormData();
-    formData.append('audio', audioBlob, 'audio.webm'); // Sending as .webm
+    formData.append('audio', blob, 'audio.webm');
 
     try {
       const response = await axios.post('http://localhost:5000/upload-speech', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      setTranscription(response.data.message);
-      console.log('Server response:', response.data); // Log the response from the server
+      console.log('Server response:', response.data);
+      setIsProcessing(false); 
     } catch (error) {
       console.error('Error sending audio to server:', error);
+      setIsProcessing(false); 
+    }
+  };
+
+  const handleButtonClick = () => {
+    if (isRecording) {
+      stopRecording(); 
+    } else {
+      startRecording(); 
     }
   };
 
   return (
     <div>
-      <button onClick={isRecording ? stopRecording : startRecording}>
-        {isRecording ? 'Stop Recording' : 'Start Recording'}
+      <button 
+        onClick={handleButtonClick} 
+        disabled={!mediaRecorderAvailable || isProcessing}
+        className='recording-button'
+      >
+        {isRecording ? 'Stop Recording' : (isProcessing ? 'Processing...' : 'Start Recording')}
       </button>
-      {audioBlob && (
-        <button onClick={sendAudioToServer}>Send to Server</button>
-      )}
-      {transcription && (
-        <div>
-          <h3>Server Response:</h3>
-          <p>{transcription}</p>
-        </div>
-      )}
     </div>
   );
 };
