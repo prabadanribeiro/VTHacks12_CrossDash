@@ -40,7 +40,7 @@ def upload_audio():
         wav_io = convert_webm_to_wav(audio_data) 
 
         # ARDA work with the wav_io variable
-        return '', 200
+        return 'working', 200
 
     except Exception as e:
         print(f"Error occurred: {e}")
