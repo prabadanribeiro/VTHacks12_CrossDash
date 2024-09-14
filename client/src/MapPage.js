@@ -1,5 +1,6 @@
 import React from 'react';
 import './MapPage.css';
+import AudioRecorder from './AudioRecorder';
 
 export default function MapPage() {
 
@@ -8,6 +9,7 @@ export default function MapPage() {
     <div className='logo-container'>
       <h1 style={{color: 'red'}}>Cross</h1><h1 style={{color: 'black'}}>Dash</h1>
     </div>
+    <AudioRecorder />
   </div>
   )
   
