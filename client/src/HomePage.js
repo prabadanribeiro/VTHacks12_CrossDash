@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ambulance from './assets/images/ambulance.jpg';
+import './HomePage.css'
 
 export default function HomePage() {
 
@@ -36,6 +38,9 @@ export default function HomePage() {
       <div>
         <h1>Button</h1>
         <Link to={'/map'}>Click</Link>
+      </div>
+      <div>
+        <img src={ambulance} alt='hospital' />
       </div>
     </div>
   );
