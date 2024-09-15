@@ -16,8 +16,8 @@ def ask_gpt(content):
                 "role": "system",
             
                 "content":  """You are going to assist a program called CrossDash. You will be giving first aid 
-                advice according to their input as bullet points moreover, DO NOT TELL THEM TO CALL EMERGENCY SERVICES OR HELP, as we will be calling it for them. 
-                Also don't forget these people will be panicking, therefore give short and useful answers which they can apply immediately. 
+                advice according to their input as bullet points seperated by dashes (THIS IS IMPORTANT) moreover, DO NOT TELL THEM TO CALL EMERGENCY SERVICES OR HELP, as we will be calling it for them. 
+                Also don't forget these people will be panicking, therefore give short and useful answers which they can apply immediately.  
                 Here is their input: """ +
                 content,
             }

@@ -146,11 +146,13 @@ export default function MapPage() {
 
   return (
     <div className='head'>
-      <div className='logo-container' style={{ textDecoration: 'none' }}>
-        <Link to='/'>
-          <h1 style={{ color: 'red', display: 'inline', textDecoration: 'none' }}>Cross</h1>
-          <h1 style={{ color: 'black', display: 'inline', textDecoration: 'none' }}>Dash</h1>
+      <div className='logo-container'>
+        <Link to='/' style={{ textDecoration: 'none' }}>
+          <h1 style={{ color: 'red', display: 'inline' }}>Cross</h1>
+          <h1 style={{ color: 'black', display: 'inline' }}>Dash</h1>
         </Link>
+      </div>
+      <div className='address-container'>
         <h1>{address}</h1>
       </div>
       <div className='get-help-stuff'>
@@ -173,7 +175,6 @@ export default function MapPage() {
               {userLocation && <Marker position={userLocation} />}
               {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
             </GoogleMap>
-
             </LoadScript>
           </div>
           <div className='audio-container'>
@@ -186,11 +187,24 @@ export default function MapPage() {
           <div className='eta-header'>
             <h1>ETA: {eta[0]} Minutes</h1>
           </div>
+          <hr style={{ width: '90%', height: '3px', backgroundColor: 'black', border: 'none' }} />
           <div className='help-container'>
             <h2 className={`steps-header ${visibility ? '' : 'center'}`}>Next Steps to Take</h2>
             <div className='advice-and-chat'>
               <div className='advice-container'>
-                <h3>{advice}</h3>
+                <h3>
+                  {advice.split('-').map((item, index) => (
+                    <span key={index}>
+                      {item.trim()}
+                      {index > 0 && (
+                        <>
+                          <br />
+                          <br />
+                        </>
+                      )}
+                    </span>
+                  ))}
+                </h3>
               </div>
               <div className='chatbox-container'>
                 <Chatbox advice={advice} audio={audio} />

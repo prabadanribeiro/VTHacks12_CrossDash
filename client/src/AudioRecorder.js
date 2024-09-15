@@ -12,17 +12,14 @@ export default function AudioRecorder ({ onReceiveAdvice }) {
   const audioChunks = useRef([]);
 
   useEffect(() => {
-    // Request permission to access the microphone
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
         mediaRecorder.current = new MediaRecorder(stream);
 
-        // Capture audio data in chunks
         mediaRecorder.current.ondataavailable = (event) => {
           audioChunks.current.push(event.data);
         };
 
-        // On stopping the recording, create a Blob and send it to the server
         mediaRecorder.current.onstop = () => {
           const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
           setAudioBlob(blob);
@@ -101,7 +98,7 @@ export default function AudioRecorder ({ onReceiveAdvice }) {
         disabled={!mediaRecorderAvailable || isProcessing}
         className='recording-button'
       >
-        {isRecording ? 'Stop Recording' : (isProcessing ? 'Processing...' : 'Start Recording')}
+        {isRecording ? 'Stop' : (isProcessing ? 'Processing...' : 'Talk')}
       </button>
     </div>
   );

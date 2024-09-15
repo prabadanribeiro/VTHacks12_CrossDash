@@ -63,31 +63,30 @@ export default function Chatbox({advice, audio}) {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', border: '1px solid #ccc', borderRadius: '5px' }}>
-      <h2>CrossDash AI Helper</h2>
-      <div style={{ 
-        maxHeight: '500px',    // Set a maximum height of 500px
-        overflowY: 'auto',     // Make it scrollable when content exceeds 500px
-        marginBottom: '20px', 
-        padding: '10px', 
-        border: '1px solid #ccc', 
-        borderRadius: '5px'    // Added to match the outer container
-      }}>
-        {messages.map((msg, index) => (
-          <div key={index} style={{ margin: '10px 0' }}>
-            <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong> {msg.content}
+    <div className="chatbox">
+      <h2 className="chatbox-header">CrossDash AI Helper</h2>
+      <div className="chatbox-messages">
+        {messages.length <= 1 ? ( // Check if there is only the initial AI message
+          <div className="chatbox-placeholder">
+            Ask the AI a question...
           </div>
-        ))}
+        ) : (
+          messages.map((msg, index) => (
+            <div key={index} className="chatbox-message">
+              <strong>{msg.role === 'user' ? 'You' : 'AI'}:</strong> {msg.content}
+            </div>
+          ))
+        )}
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="chatbox-input-container">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask your fitness coach..."
-          style={{ width: '80%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+          placeholder="Ask CrossDash's AI..."
+          className="chatbox-input"
         />
-        <button type="submit" disabled={isLoading} style={{ padding: '10px', marginLeft: '10px' }}>
+        <button type="submit" disabled={isLoading} className="chatbox-button">
           {isLoading ? 'Sending...' : 'Send'}
         </button>
       </form>

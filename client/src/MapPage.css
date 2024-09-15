@@ -1,18 +1,21 @@
 .head {
+  min-height: 100vh; /* Ensures it takes the full viewport height */
+  width: 100%;
   background-color: #e2e0e0;
+  position: relative;
+  padding-bottom: 100px; /* Add space at the bottom while keeping the background intact */
 }
+
 
 .logo-container {
   width: 325px;
   height: 80px;
-  background-color: #f4f4f4;
-  border-radius: 8px;
-  border: 1px solid #ddd;
   padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  background-color: transparent;
 }
 
 .logo-container h1 {
@@ -22,6 +25,16 @@
   font-size: 50px;
   font-family: 'Montserrat', sans-serif;
   vertical-align: middle;
+}
+
+.address-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 20px;
+  font-size: 10px;
+  color: black;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .get-help-now {
@@ -52,34 +65,49 @@
 .map-container {
   width: 70%;
   height: 450px;
-  margin-right: 20px; 
-  border: 1px solid black;
+  margin-right: 20px;
+  border: 3px solid black;
 }
 
+
 .audio-container {
-  width: 30%; 
+  width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .recording-button {
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 20px 25px;
-  font-size: 30px;
-  font-family: 'Montserrat', sans-serif;
-  border-radius: 8px;
+  display: inline-flex; 
+  justify-content: center;  
+  align-items: center; 
+  outline: 0;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  border-radius: 6px;
+  border: 2px solid #cc4742;
+  color: #cc4742;
+  background: 0 0;
+  padding: 20px 30px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 2px 4px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1.5px 0px;
+  font-weight: 800;
+  font-size: 30px;
+  height: 60px;
+  text-align: center;
 }
+
+.recording-button:hover {
+  background-color: #cc4742;
+  color: #fff;
+}
+
 
 .eta-header {
   position: relative;
-  margin-left: 5%; 
+  margin-left: 5%;
   margin-top: -80px;
+  font-weight: 800;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 35px;
 }
 
 .help-container {
@@ -90,8 +118,9 @@
 }
 
 .steps-header {
-  font-size: 35px;
-  font-family: 'Montserrat, sans-serif';
+  font-size: 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
   margin-left: 60px;
   transition: all 0.3s ease;
 }
@@ -114,15 +143,97 @@
 
 .advice-container {
   width: 600px;
-  height: 500px;
-  border: 1px solid black;
+  max-height: 600px;
+  border: 1px solid #ddd;
+  background-color: rgb(247, 243, 243);
   border-radius: 12px;
-  font-size: 25px;
+  font-size: 14.9px;
   margin-right: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
+.advice-container h3 {
+  font-family: 'Montserrat', sans-serif; 
+  line-height: 1.6; 
+  color: #333; 
+  margin: 0;
+  padding: 0;
+}
+
+
 .chatbox-container {
+  font-family: 'Montserrat', sans-serif; 
+  font-weight: 1000;
   flex-grow: 1;
   max-width: 600px;
   margin-left: 20px;
+  font-family: 'Montserrat', sans-serif; 
 }
+
+.chatbox {
+  background-color: rgb(247, 243, 243); /* Softer background color */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 20px;
+  max-width: 100%;
+}
+
+.chatbox-header {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.chatbox-messages {
+  max-height: 400px; /* Adjust height */
+  overflow-y: auto;
+  background-color: #f4f4f9;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.chatbox-message {
+  margin: 10px 0;
+}
+
+.chatbox-message strong {
+  color: #555; /* Softer color for usernames */
+}
+
+.chatbox-input-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chatbox-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #c7c4c4;
+  font-size: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.chatbox-button {
+  background-color: #5c6ac4; /* A modern button color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.chatbox-button:hover {
+  background-color: #4754a6; /* Slightly darker shade on hover */
+}
+
