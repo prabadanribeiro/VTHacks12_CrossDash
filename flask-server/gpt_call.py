@@ -17,7 +17,7 @@ def call_text(content, location):
             
                 "content":  """You are going to assist a program called CrossDash. You will be generating text to be read out to
                 emergency services given their input. Please make sure you keep it professional, but also brief as it is a life death
-                scenario.
+                scenario. When you say the address, do not include the name of the country. Also, make sure to include the address smoothly.
                 Here is their input: """ + content + "And here is the address you must include" + location,
                 
             }
