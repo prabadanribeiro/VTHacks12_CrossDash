@@ -1,62 +1,56 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import ambulance from './assets/images/ambulance.jpg';
 import CrossDash_Logo from './assets/images/CrossDash_Logo.png';
-import './HomePage.css'
+import './HomePage.css';
 
 export default function HomePage() {
-
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    axios.get('http://127.0.0.1:5000/members')
-      .then(response => {
-        setData(response.data);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('There was an error fetching the data!', error);
-      });
-  }, []);
-
   return (
-    <div className='head'>
-      <div className='logo-container'>
-        <h1 style={{color: 'red'}}>Cross</h1><h1 style={{color: 'black'}}>Dash</h1>
-        <img className='LogoStyling'src={CrossDash_Logo} alt="logo" />
+    <>
+      <header className='head'>
+        {/* First Half Section */}
+        <div className='first-half'>
+          <div className='logo-container1'>
+            <h1>
+              <span style={{ color: 'red' }}>Cross</span>
+              <span style={{ color: 'black' }}>Dash</span>
+            </h1>
+            <img className='LogoStyling1' src={CrossDash_Logo} alt="CrossDash Logo" />
+          </div>
+          {/* What We Do Section (Left Side) */}
+          <section className="what-we-do">
+            <h1>What We Do</h1>
+            <p>
+              We are an emergency help service that connects you to 911 while our AI provides necessary information to the dispatcher 
+              after listening to your situation. Our AI will also offer basic first-aid instructions tailored to the injury that occurred, 
+              allowing you to give your full attention to helping the injured person in need. 
+              Your safety and well-being are our priority.
+            </p>
+          </section>
+
+          {/* Call to Action (Right Side) */}
+          <div className="cta-container">
+            <h1>Get Emergency Help Now</h1>
+            <Link to={'/map'}>Click Here</Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Helplines Section */}
+      <div className="helpline-section">
+        <h1>Hotline & Helpline Services</h1>
+        
+        <div>
+          <h2>Suicide and Crisis Hotline:</h2>
+          <p>988</p>
+        </div>
+        
+        <div>
+          <span>Disaster Distress Helpline: 1-800-985-5990</span>
+          <span>Poison Help Hotline: 1-800-222-1222</span>
+          <span>Substance Abuse and Mental Health Services Administration’s National Helpline: 1-800-662-HELP (1-800-622-4357)</span>
+        </div>
       </div>
 
-      <h1>Members</h1>
-      {data ? (
-        <ul>
-          {data.members.map((member, index) => (
-            <li key={index}>{member}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading...</p>
-      )}
-      <div>
-        <h1>GET HELP</h1>
-        <Link to={'/map'}>Click</Link>
-      </div>
-      <div>
-        <img src={ambulance} alt='hospital' />
-      </div>
-      <h1>What We Do</h1>
-      <p>
-        We are an emergency help service that connects you to 911 while our AI provides the necessary information to the dispatcher
-        after listening to your situation. Our AI will give you the basic first aid instructions needed based on the injury that occured,
-        allowing you to give your full attention to help the injured in need.
-      </p>
-      <h1>Hotline & Helpline Services</h1>
-      <p>
-        <h2>Suicide and Crisis Hotline:</h2> 988 <br/>
-        Disaster Distress Helpline: 1-800-985-5990 <br/>
-        Poison Help Hotline 1-800-222-1222<br/>
-        Substance Abuse and Mental Health Services Administration’s National Helpline 1-800-662-HELP (1-800-622-4357) <br/>
-      </p>
-    </div>
+    </>
   );
 }

@@ -11,6 +11,7 @@
   width: 325px;
   height: 80px;
   padding: 10px;
+  margin-left: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
