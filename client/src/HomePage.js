@@ -10,7 +10,7 @@ export default function HomePage() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/members')
+    axios.get('http://127.0.0.1:5000/members')
       .then(response => {
         setData(response.data);
         console.log(response.data);

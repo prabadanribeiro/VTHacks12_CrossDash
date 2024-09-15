@@ -3,11 +3,15 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 import './MapPage.css';
 import AudioRecorder from './AudioRecorder';
+import Chatbox from './Chatbox';
 
 export default function MapPage() {
 
   const [address, setAddress] = useState('');
+  const [audio, setAudio] = useState('');
+  const [visibility, setVisibility] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [advice, setAdvice] = useState('');
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -22,7 +26,7 @@ export default function MapPage() {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
-    axios.get('http://localhost:5000/find-address', {
+    axios.get('http://127.0.0.1:5000/find-address', {
       params: {
         latitude: latitude,
         longitude: longitude
@@ -36,6 +40,12 @@ export default function MapPage() {
       setErrorMessage('Failed to fetch address');
     });
 
+  };
+
+  const handleReceiveAdvice = (advice, audio) => {
+    setAdvice(advice);
+    setAudio(audio);
+    setVisibility(true)
   };
 
   const showError = (error) => {
@@ -74,13 +84,29 @@ export default function MapPage() {
         <div className='content-container'>
           <div className='map-container'></div>
           <div className='audio-container'>
-            <AudioRecorder />
+            <AudioRecorder onReceiveAdvice={handleReceiveAdvice}/>
           </div>
         </div>
       </div>
-      <div className='help-container'>
-        <h1 style={{marginTop: '-50px', marginLeft: '5%'}}>ETA:</h1>
-      </div>
+      {visibility && (
+        <>
+          <div className='eta-header'>
+          <h1>ETA:</h1>
+          </div>
+          <div className='help-container'>
+            <h2 className={`steps-header ${visibility ? '' : 'center'}`}>Next Steps to Take</h2>
+            <div className='advice-and-chat'>
+              <div className='advice-container'>
+                <h3>{advice}</h3>
+              </div>
+              <div className="chatbox-container">
+                <Chatbox advice={advice} audio={audio} />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
     </div>
   );
 }
