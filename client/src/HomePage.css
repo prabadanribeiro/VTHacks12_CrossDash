@@ -24,3 +24,9 @@
   font-family: 'Montserrat', sans-serif;
   vertical-align: middle;
 }
+
+.LogoStyling {
+  width: 100px;
+  height: 80px;
+  background-color: #f4f4f4;
+}
