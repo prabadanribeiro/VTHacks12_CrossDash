@@ -35,9 +35,8 @@ def get_eta(source, destination):
     )
     return round(result[0]['legs'][0]['duration']['value'])
 
-x = []
-
 def eta_decrease(eta):
+    x = []
     while eta > 0:
         remaining_time = timedelta(seconds = eta)
         x.append(int(remaining_time.total_seconds())//60)

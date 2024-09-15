@@ -16,7 +16,7 @@ export default function MapPage() {
   const [audio, setAudio] = useState('');
   const [visibility, setVisibility] = useState(false);
   const [hospitals, setHospitals] = useState([]);
-  const [eta, setEta] = useState('');
+  const [eta, setEta] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [advice, setAdvice] = useState('');
   const [userLocation, setUserLocation] = useState(null);
@@ -24,10 +24,10 @@ export default function MapPage() {
   const [map, setMap] = useState(null);
 
   const mapOptions = {
-    disableDefaultUI: true,  // Disables all the default UI controls
-    mapTypeControl: false,   // Disables the Map/Satellite toggle
-    zoomControl: false,      // Disables the zoom controls
-    streetViewControl: false // Disables the street view pegman
+    disableDefaultUI: true, 
+    mapTypeControl: false,   
+    zoomControl: false,      
+    streetViewControl: false 
   };
 
   useEffect(() => {
@@ -54,12 +54,30 @@ export default function MapPage() {
       .then((response) => {
         setAddress(response.data.address);
         setEta(response.data.eta);
+        console.log(response.data.eta);
         setHospitals(response.data.hospitals);
+
+        // Start the countdown after setting the initial ETA
+        startEtaCountdown(response.data.eta);
       })
       .catch((error) => {
         console.error('Error:', error);
         setErrorMessage('Failed to fetch address');
       });
+  };
+
+  const startEtaCountdown = (initialEta) => {
+    setEta(initialEta);
+
+    const intervalId = setInterval(() => {
+      setEta((prevEta) => {
+        if (prevEta.length <= 1) {
+          clearInterval(intervalId); // Clear the interval once we reach the last value
+          return prevEta;
+        }
+        return prevEta.slice(1); // Remove the first element (count down by one minute)
+      });
+    }, 60000); // 60000 ms = 1 minute
   };
 
   const handleReceiveAdvice = (advice, audio) => {
@@ -166,8 +184,7 @@ export default function MapPage() {
       {visibility && (
         <>
           <div className='eta-header'>
-            <h1>ETA: {eta}</h1>
-            <h1>{hospitals[0]?.name}</h1>
+            <h1>ETA: {eta[0]} Minutes</h1>
           </div>
           <div className='help-container'>
             <h2 className={`steps-header ${visibility ? '' : 'center'}`}>Next Steps to Take</h2>

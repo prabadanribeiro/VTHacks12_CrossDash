@@ -7,10 +7,10 @@ import io
 from pydub import AudioSegment
 import time
 from main_be import main_be
-from closest_hospital import closest_hospitals, get_eta
+from closest_hospital import closest_hospitals, get_eta, eta_decrease
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app)
 
 global eta
 eta = ""
@@ -24,45 +24,52 @@ def get_members():
     members = {"members": ["member1", "member2", "member3"]}
     return jsonify(members)
 
-
 @app.route('/find-address', methods=['GET'])
 def find_address():
     try:
         global address
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
-       
-        hospitals = closest_hospitals(latitude, longitude)
-        
-        eta = get_eta(str(latitude)+', '+str(longitude), str(hospitals[0]['lat'])+', '+str(hospitals[0]['lng']))
 
         if not latitude or not longitude:
             return jsonify({'error': 'Missing latitude or longitude'}), 400
 
-        print(f"Received latitude: {latitude}, longitude: {longitude}") 
+        hospitals = closest_hospitals(latitude, longitude)
 
-        api_key = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U' 
+        if not hospitals:
+            return jsonify({'error': 'No hospitals found nearby'}), 404
+
+        # Access lat/lng correctly from hospitals
+        hospital_location = hospitals[0]
+        destination = f"{hospital_location['lat']}, {hospital_location['lng']}"
+
+        eta = eta_decrease(get_eta(f"{latitude}, {longitude}", destination))
+
+        print(f"Received latitude: {latitude}, longitude: {longitude}")
+
+        api_key = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U'
         url = 'https://maps.googleapis.com/maps/api/geocode/json'
         params = {
             'latlng': f'{latitude},{longitude}',
             'key': api_key
         }
-        
+
         response = requests.get(url, params=params)
         result = response.json()
-       
+
         address = result['results'][0]['formatted_address']
-        
+
+        # Return the final data, no 'text' field in eta, so return the list
         return jsonify({
             'address': address,
             'hospitals': hospitals,
-            'eta': eta['text'],
+            'eta': eta  # This will return the list of remaining times in minutes
         })
 
     except Exception as e:
-        print(f"An error occurred: {e}")  
+        print(f"An error occurred: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
-    
+
 @app.route('/download-audio/<filename>', methods=['GET'])
 def download_audio(filename):
     file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -77,9 +84,9 @@ def upload_audio():
     try:
         if 'audio' not in request.files:
             return 'Audio file not found', 400
-        
+
         global said_message, address
-        
+
         audio_file = request.files['audio']
         file_path = os.path.join(UPLOAD_FOLDER, audio_file.filename)
         audio_file.save(file_path)
@@ -95,7 +102,7 @@ def upload_audio():
     except Exception as e:
         print(f"Error occurred: {e}")
         return str(e), 500
-    
+
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
     app.run(debug=True)
