@@ -16,7 +16,7 @@ def main_be(location):
     advice = ask_gpt(said_message)
     call_message = call_text(said_message, location)
     #Third step: print out the advice and call the emergency services#
-    call(call_message)
+    # call(call_message)
     return advice, said_message
 
 #needs audio in webm and location#
