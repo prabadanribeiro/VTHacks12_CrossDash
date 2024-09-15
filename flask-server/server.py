@@ -33,9 +33,8 @@ def find_address():
         longitude = request.args.get('longitude')
        
         hospitals = closest_hospitals(latitude, longitude)
-        eta =get_eta(str(latitude)+', '+str(longitude), str(hospitals[0]['lat'])+', '+str(hospitals[0]['lng']))
-
-
+        
+        eta = get_eta(str(latitude)+', '+str(longitude), str(hospitals[0]['lat'])+', '+str(hospitals[0]['lng']))
 
         if not latitude or not longitude:
             return jsonify({'error': 'Missing latitude or longitude'}), 400
@@ -54,7 +53,11 @@ def find_address():
        
         address = result['results'][0]['formatted_address']
         
-        return jsonify({'address': address})
+        return jsonify({
+            'address': address,
+            'hospitals': hospitals,
+            'eta': eta['text'],
+        })
 
     except Exception as e:
         print(f"An error occurred: {e}")  

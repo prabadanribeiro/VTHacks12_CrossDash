@@ -5,7 +5,6 @@ import time
 
 API_KEY = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U'
 gmaps_client = googlemaps.Client(key = API_KEY)
-now = datetime.now()
 
 def closest_hospitals(lat, lon):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
@@ -26,6 +25,7 @@ def closest_hospitals(lat, lon):
     return hospital_cords
 
 def get_eta(source, destination):
+    now = datetime.now()
     result = gmaps_client.directions(
         source,
         destination,
