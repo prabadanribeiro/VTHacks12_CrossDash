@@ -1,6 +1,7 @@
 import requests
 import googlemaps
-from datetime import datetime
+from datetime import datetime, timedelta
+import time
 
 API_KEY = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U'
 gmaps_client = googlemaps.Client(key = API_KEY)
@@ -32,12 +33,21 @@ def get_eta(source, destination):
         departure_time = now,
         transit_mode = 'driving'
     )
-    return result[0]['legs'][0]['distance']
+    return round(result[0]['legs'][0]['duration']['value'])
+
+x = []
+
+def eta_decrease(eta):
+    while eta > 0:
+        remaining_time = timedelta(seconds = eta)
+        x.append(int(remaining_time.total_seconds())//60)
+        eta -= 60
+    return x
 
 
-# lst = closest_hospitals()
-# get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng']))
+lst = closest_hospitals(37.369660, -81.270450)
 
-
+print(eta_decrease(get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng']))))
+#print(get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng'])))
 
     
