@@ -41,7 +41,7 @@ export default function Chatbox({advice, audio}) {
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer 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`,
           },
         }
       );

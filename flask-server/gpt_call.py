@@ -1,7 +1,7 @@
 from openai import OpenAI
 
 
-API_KEY = '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'  # Replace with your actual API key
+API_KEY = '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'  # Replace with your actual API key
 MODEL="gpt-4o-mini"
 
 client = OpenAI(
