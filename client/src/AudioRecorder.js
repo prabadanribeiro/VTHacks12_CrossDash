@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './MapPage.css';
 
-const AudioRecorder = () => {
+export default function AudioRecorder ({ onReceiveAdvice }) {
 
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -12,14 +12,17 @@ const AudioRecorder = () => {
   const audioChunks = useRef([]);
 
   useEffect(() => {
+    // Request permission to access the microphone
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
         mediaRecorder.current = new MediaRecorder(stream);
 
+        // Capture audio data in chunks
         mediaRecorder.current.ondataavailable = (event) => {
           audioChunks.current.push(event.data);
         };
 
+        // On stopping the recording, create a Blob and send it to the server
         mediaRecorder.current.onstop = () => {
           const blob = new Blob(audioChunks.current, { type: 'audio/webm' });
           setAudioBlob(blob);
@@ -53,24 +56,33 @@ const AudioRecorder = () => {
   };
 
   const sendAudioToServer = async (blob) => {
-    
+
     if (!blob) return;
 
     const formData = new FormData();
     formData.append('audio', blob, 'audio.webm');
 
     try {
-      const response = await axios.post('http://localhost:5000/upload-speech', formData, {
+      axios.post('http://127.0.0.1:5000/upload-speech', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      });
+      })
+      .then(response => {
+        const advice = response.data.advice;
+        const audio = response.data.audio;
 
-      console.log('Server response:', response.data);
-      setIsProcessing(false); 
+        onReceiveAdvice(advice, audio);
+
+        setIsProcessing(false);
+      })
+      .catch(error => {
+        console.error('Error sending audio to server:', error);
+        setIsProcessing(false);
+      });
     } catch (error) {
       console.error('Error sending audio to server:', error);
-      setIsProcessing(false); 
+      setIsProcessing(false);
     }
   };
 
@@ -94,5 +106,3 @@ const AudioRecorder = () => {
     </div>
   );
 };
-
-export default AudioRecorder;
