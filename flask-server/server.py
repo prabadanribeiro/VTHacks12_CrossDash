@@ -7,14 +7,15 @@ import io
 from pydub import AudioSegment
 import time
 from main_be import main_be
-from closest_hospital import closest_hospitals
+from closest_hospital import closest_hospitals, get_eta
 
 app = Flask(__name__)
 CORS(app) 
 
-latitude_send = None
-longitude_send = None
-address_for_main = None
+global eta
+eta = ""
+address = ""
+
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -27,14 +28,14 @@ def get_members():
 @app.route('/find-address', methods=['GET'])
 def find_address():
     try:
-        global latitude_send, longitude_send
+        global address
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
-        
+       
+        hospitals = closest_hospitals(latitude, longitude)
+        eta =get_eta(str(latitude)+', '+str(longitude), str(hospitals[0]['lat'])+', '+str(hospitals[0]['lng']))
 
-        latitude_send = latitude
-        longitude_send = longitude
-        closest_hospitals(latitude_send, longitude_send)
+
 
         if not latitude or not longitude:
             return jsonify({'error': 'Missing latitude or longitude'}), 400
@@ -52,7 +53,7 @@ def find_address():
         result = response.json()
        
         address = result['results'][0]['formatted_address']
-        address_for_main = address
+        
         return jsonify({'address': address})
 
     except Exception as e:
@@ -74,14 +75,14 @@ def upload_audio():
         if 'audio' not in request.files:
             return 'Audio file not found', 400
         
-        global said_message
+        global said_message, address
         
         audio_file = request.files['audio']
         file_path = os.path.join(UPLOAD_FOLDER, audio_file.filename)
         audio_file.save(file_path)
         time.sleep(1)
 
-        advice, said_message = main_be(address_for_main)
+        advice, said_message = main_be(address)
 
         return jsonify({
             'advice': advice,
