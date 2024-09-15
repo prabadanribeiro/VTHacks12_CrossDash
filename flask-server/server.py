@@ -12,7 +12,8 @@ from closest_hospital import closest_hospitals
 app = Flask(__name__)
 CORS(app) 
 
-latitude_send, longitude_send = None
+latitude_send = None
+longitude_send = None
 address_for_main = None
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -90,31 +91,7 @@ def upload_audio():
     except Exception as e:
         print(f"Error occurred: {e}")
         return str(e), 500
-
-
-
-@app.route('/upload-speech', methods=['POST'])
-def upload_audio():
-    try:
-        # Check if the audio file is in the request
-        if 'audio' not in request.files:
-            return 'Audio file not found', 400
-        
-        audio_file = request.files['audio']
-
-        # Generate a safe file name and save it to the uploads folder
-        file_path = os.path.join(UPLOAD_FOLDER, audio_file.filename)
-
-        # Save the file to the specified path
-        audio_file.save(file_path)
-        time.sleep(1)
-        advice = main_be(address_for_main)
-
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        return str(e), 500
     
-
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)
     app.run(debug=True)

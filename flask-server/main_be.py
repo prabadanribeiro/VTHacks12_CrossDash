@@ -14,9 +14,9 @@ def main_be(location):
     said_message = listen(convert('uploads/audio.webm', 'uploads/audio.wav'))
     #Second step: Put the message through both the advise giving AI and the calling AI#
     advice = ask_gpt(said_message)
-    # call_message = call_text(said_message, location)
+    call_message = call_text(said_message, location)
     #Third step: print out the advice and call the emergency services#
-    # call(call_message)
+    call(call_message)
     return advice, said_message
 
 #needs audio in webm and location#

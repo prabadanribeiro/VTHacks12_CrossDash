@@ -35,8 +35,8 @@ def get_eta(source, destination):
     return result[0]['legs'][0]['distance']
 
 
-lst = closest_hospitals()
-get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng']))
+# lst = closest_hospitals()
+# get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng']))
 
 
 
