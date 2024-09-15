@@ -41,6 +41,7 @@ def eta_decrease(eta):
     while eta > 0:
         remaining_time = timedelta(seconds = eta)
         x.append(int(remaining_time.total_seconds())//60)
+        time.sleep(60)
         eta -= 60
     return x
 
