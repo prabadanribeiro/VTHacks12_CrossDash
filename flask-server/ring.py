@@ -9,5 +9,5 @@ client = Client(account_sid, auth_token)
 def call(msg):
     call = client.calls.create(
         twiml = '<Response><Say>'+ msg + '</Say></Response>',
-        to = "+17125705082",
+        to = "+13364079639",
         from_ = '+18337723016')

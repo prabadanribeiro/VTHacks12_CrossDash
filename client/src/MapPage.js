@@ -44,26 +44,24 @@ export default function MapPage() {
 
     setUserLocation({ lat: latitude, lng: longitude });
 
-    axios
-      .get('http://127.0.0.1:5000/find-address', {
-        params: {
-          latitude: latitude,
-          longitude: longitude,
-        },
-      })
-      .then((response) => {
-        setAddress(response.data.address);
-        setEta(response.data.eta);
-        console.log(response.data.eta);
-        setHospitals(response.data.hospitals);
+    axios.get('http://127.0.0.1:5000/find-address', {
+      params: {
+        latitude: latitude,
+        longitude: longitude,
+      },
+    })
+    .then((response) => {
+      setAddress(response.data.address);
+      setEta(response.data.eta);
+      console.log(response.data.eta);
+      setHospitals(response.data.hospitals);
 
-        // Start the countdown after setting the initial ETA
-        startEtaCountdown(response.data.eta);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setErrorMessage('Failed to fetch address');
-      });
+      startEtaCountdown(response.data.eta);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      setErrorMessage('Failed to fetch address');
+    });
   };
 
   const startEtaCountdown = (initialEta) => {
@@ -72,12 +70,12 @@ export default function MapPage() {
     const intervalId = setInterval(() => {
       setEta((prevEta) => {
         if (prevEta.length <= 1) {
-          clearInterval(intervalId); // Clear the interval once we reach the last value
+          clearInterval(intervalId); 
           return prevEta;
         }
-        return prevEta.slice(1); // Remove the first element (count down by one minute)
+        return prevEta.slice(1);
       });
-    }, 60000); // 60000 ms = 1 minute
+    }, 60000); 
   };
 
   const handleReceiveAdvice = (advice, audio) => {
