@@ -2,8 +2,13 @@ import requests
 import googlemaps
 from datetime import datetime, timedelta
 import time
+import os
+from dotenv import load_dotenv
 
-API_KEY = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U'
+load_dotenv()
+google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
+
+API_KEY = google_maps_api_key
 gmaps_client = googlemaps.Client(key = API_KEY)
 
 def closest_hospitals(lat, lon):
@@ -45,8 +50,3 @@ def eta_decrease(eta):
 
 
 lst = closest_hospitals(37.369660, -81.270450)
-
-print(eta_decrease(get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng']))))
-#print(get_eta('37.369660, -81.270450', str(lst[0]['lat'])+', '+str(lst[0]['lng'])))
-
-    

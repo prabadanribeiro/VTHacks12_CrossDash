@@ -1,10 +1,13 @@
 from twilio.rest import Client
 from gpt_call import call_text
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
+phone_account_sid = os.getenv('PHONE_ACCOUNT_SID')
+phone_auth_token = os.getenv('PHONE_AUTH_TOKEN')
 
-account_sid = 'ACefe208e509359f5a05c18b9cdd6b2850'
-auth_token = '4c1212261da7b1c6cc2d1af1fafee9b8'
-client = Client(account_sid, auth_token)
+client = Client(phone_account_sid, phone_auth_token)
 
 def call(msg):
     call = client.calls.create(

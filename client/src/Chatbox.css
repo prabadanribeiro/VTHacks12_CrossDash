@@ -1,0 +1,89 @@
+:root {
+  --white: #FAF9F6;
+  --red: #bf3131;
+}
+
+.chatbox {
+  background-color: var(--white);
+  border: 5px solid black;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 100%;
+  max-height: 400px;
+  overflow: hidden; 
+  font-weight: 600;
+}
+
+.chatbox-header {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: var(--red);
+  font-size: 35px;
+}
+
+.chatbox-messages {
+  max-height: 250px; 
+  overflow-y: auto; 
+  background-color: #fbfafa;
+  padding: 15px;
+  border: 3px solid black;
+  margin-bottom: 20px;
+}
+
+.chatbox-messages::-webkit-scrollbar {
+  width: 12px;
+}
+
+.chatbox-messages::-webkit-scrollbar-track {
+  background: #3a2a2a; 
+}
+
+.chatbox-messages::-webkit-scrollbar-thumb {
+  background: #555; 
+}
+
+.chatbox-messages::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+.chatbox-message {
+  margin: 10px 0;
+  color: black;
+  text-align: left;
+}
+
+.chatbox-message strong {
+  color: var(--red);
+}
+
+.chatbox-input-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chatbox-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #c7c4c4;
+  font-size: 16px;
+}
+
+.chatbox-button {
+  background-color: var(--red);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.chatbox-button:hover {
+  background-color: #962d2d;
+}

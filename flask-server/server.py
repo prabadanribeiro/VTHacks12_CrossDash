@@ -11,47 +11,29 @@ from closest_hospital import closest_hospitals, get_eta, eta_decrease
 
 app = Flask(__name__)
 CORS(app)
-
-global eta
+google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
 eta = ""
 address = ""
+latitude = ""
+longitude = ""
 
 UPLOAD_FOLDER = './uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@app.route('/members', methods=['GET'])
-def get_members():
-    members = {"members": ["member1", "member2", "member3"]}
-    return jsonify(members)
-
 @app.route('/find-address', methods=['GET'])
 def find_address():
     try:
-        global address
+        global address, latitude, longitude
         latitude = request.args.get('latitude')
         longitude = request.args.get('longitude')
 
         if not latitude or not longitude:
             return jsonify({'error': 'Missing latitude or longitude'}), 400
 
-        hospitals = closest_hospitals(latitude, longitude)
-
-        if not hospitals:
-            return jsonify({'error': 'No hospitals found nearby'}), 404
-
-        # Access lat/lng correctly from hospitals
-        hospital_location = hospitals[0]
-        destination = f"{hospital_location['lat']}, {hospital_location['lng']}"
-
-        eta = eta_decrease(get_eta(f"{latitude}, {longitude}", destination))
-
-        print(f"Received latitude: {latitude}, longitude: {longitude}")
-
-        api_key = 'AIzaSyA3O80449lCO3pSJzfxgwGpkatd9L4e-9U'
         url = 'https://maps.googleapis.com/maps/api/geocode/json'
         params = {
             'latlng': f'{latitude},{longitude}',
-            'key': api_key
+            'key': google_maps_api_key
         }
 
         response = requests.get(url, params=params)
@@ -59,11 +41,8 @@ def find_address():
 
         address = result['results'][0]['formatted_address']
 
-        # Return the final data, no 'text' field in eta, so return the list
         return jsonify({
-            'address': address,
-            'hospitals': hospitals,
-            'eta': eta  # This will return the list of remaining times in minutes
+            'address': address
         })
 
     except Exception as e:
@@ -85,18 +64,30 @@ def upload_audio():
         if 'audio' not in request.files:
             return 'Audio file not found', 400
 
-        global said_message, address
+        global said_message, address, eta, latitude, longitude
 
         audio_file = request.files['audio']
         file_path = os.path.join(UPLOAD_FOLDER, audio_file.filename)
         audio_file.save(file_path)
         time.sleep(1)
 
+        hospitals = closest_hospitals(latitude, longitude)
+
+        if not hospitals:
+            return jsonify({'error': 'No hospitals found nearby'}), 404
+
+        hospital_location = hospitals[0]
+        destination = f"{hospital_location['lat']}, {hospital_location['lng']}"
+
+        eta = eta_decrease(get_eta(f"{latitude}, {longitude}", destination))
+
         advice, said_message = main_be(address)
 
         return jsonify({
             'advice': advice,
-            'audio': said_message
+            'audio': said_message,            
+            'hospitals': hospitals,
+            'eta': eta
         })
 
     except Exception as e:

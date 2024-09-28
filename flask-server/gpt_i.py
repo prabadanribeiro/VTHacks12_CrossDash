@@ -1,7 +1,12 @@
 from openai import OpenAI
 from sttxt import listen
+from dotenv import load_dotenv
+import os
 
-API_KEY = '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'  # Replace with your actual API key
+load_dotenv()
+open_ai_api_key = os.getenv('OPEN_AI_API_KEY')
+
+API_KEY = open_ai_api_key
 MODEL="gpt-4o-mini"
 
 

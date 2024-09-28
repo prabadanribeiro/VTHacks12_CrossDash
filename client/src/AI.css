@@ -1,0 +1,123 @@
+  :root {
+    --white: #FAF9F6;
+    --red: #bf3131;
+  }
+  
+  .AI {
+    margin: 0;
+    padding: 0;
+    background-color: var(--white);
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .next-steps-header-container {
+    width: 100%;
+    height: 90px;
+    display: flex;
+    flex-direction: column-reverse;
+    box-sizing: border-box;
+    padding: 0 90px 0 90px;
+  }
+
+  .next-steps-text-container {
+    width: 800px;
+    height: 90px;
+    display: flex; 
+    align-items: flex-end; 
+  }
+  
+  .next-steps-text-container h2 {
+    font-size: 70px;
+    font-weight: 500;
+    color: var(--red);
+  }
+  
+  .next-steps-hr {
+    width: 100%;
+    height: 8px;
+    background-color: var(--red);
+    color: var(--red);
+    margin-top: -10px;
+  }
+
+  .next-steps-container {
+    width: 100%;
+    height: 1200px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    padding: 0 90px 0 90px;
+  }
+
+  .AI-bar {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    color: var(--white);
+    background-color: var(--red);
+    border: 5px solid black;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .AI-advice-text {
+    height: 300px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .AI-advice-text h1 {
+    font-size: 70px;
+    font-weight: 500;
+  }
+
+  .AI-advice-container {
+    width: 550px;
+    max-height: 450px;
+    padding: 30px;
+    border: 5px solid black;
+    border-radius: 8px;
+    background-color: var(--white);
+    text-align: center;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .AI-advice-container h3 {
+    font-family: 'Montserrat', sans-serif; 
+    line-height: 1; 
+    color: var(--red); 
+    text-align: left;
+    font-size: 20px;
+    width: 100%;
+  }
+
+  .AI-advice-container::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .AI-advice-container::-webkit-scrollbar-track {
+    background: #3a2a2a; 
+  }
+  
+  .AI-advice-container::-webkit-scrollbar-thumb {
+    background: #555; 
+  }
+  
+  .AI-advice-container::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  }
+
+  .chatbox-container {
+    max-width: 600px;
+    font-weight: 1000;
+    flex-grow: 1;
+    font-family: 'Montserrat', sans-serif; 
+  }
