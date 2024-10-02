@@ -5,12 +5,21 @@ from moviepy.editor import AudioFileClip
 import os
 import io
 from pydub import AudioSegment
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import time
 from main_be import main_be
 from closest_hospital import closest_hospitals, get_eta, eta_decrease
-
+from data.post_data import post
+from gpt_data import gpt_data
 app = Flask(__name__)
 CORS(app)
+password = 'yJsKf4xToMs2TM5H'
+uri = f"mongodb+srv://admin:askjfhql23ku4hkjwaerasdf@virginia-tech.kmkg2.mongodb.net/?retryWrites=true&w=majority&appName=Virginia-Tech"
+client = MongoClient(uri, server_api=ServerApi('1'))
+
+db = client["HeatMap"]
+collection = db["collection"]
 google_maps_api_key = os.getenv('GOOGLE_MAPS_API_KEY')
 eta = ""
 address = ""
@@ -82,6 +91,12 @@ def upload_audio():
         eta = eta_decrease(get_eta(f"{latitude}, {longitude}", destination))
 
         advice, said_message = main_be(address)
+
+        data = {
+             'address' : address,
+             'cause' : gpt_data(said_message)
+        }
+        post(data)
 
         return jsonify({
             'advice': advice,

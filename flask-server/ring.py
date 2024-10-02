@@ -12,5 +12,5 @@ client = Client(phone_account_sid, phone_auth_token)
 def call(msg):
     call = client.calls.create(
         twiml = '<Response><Say>'+ msg + '</Say></Response>',
-        to = "+13364079639",
+        to = "+17125705082",
         from_ = '+18337723016')
